@@ -56,7 +56,7 @@ try
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
     builder.Services.AddOpenApi();
 
-    builder.Services.AddScoped<DataService>();
+    builder.Services.AddScoped<IPlayersService, PlayersService>();
 
     var app = builder.Build();
         
