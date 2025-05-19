@@ -58,6 +58,7 @@ try
 
     builder.Services.AddScoped<IPlayersService, PlayersService>();
     builder.Services.AddScoped<ICoachesService, CoachesService>();
+    builder.Services.AddScoped<IAuthservice, Authservice>();
 
     var app = builder.Build();
         
