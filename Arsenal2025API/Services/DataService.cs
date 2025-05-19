@@ -5,9 +5,12 @@ namespace Arsenal2025API.Services;
 
 public class DataService
 {
-    public DataService(IWebHostEnvironment webHostEnvironment) 
+    private readonly ILogger<DataService> _logger;
+    public DataService(IWebHostEnvironment webHostEnvironment, 
+        ILogger<DataService> logger)
     {
         WebHostEnvironment = webHostEnvironment;
+        _logger = logger;
     }
 
     private IWebHostEnvironment WebHostEnvironment { get; }
@@ -22,15 +25,19 @@ public class DataService
     
     public IEnumerable<Player> GetPlayers()
     {
+        _logger.LogInformation("Getting players");
         using StreamReader streamReader = new(PlayersFileName);
         var json = streamReader.ReadToEnd();
+        _logger.LogInformation("Finished getting players");
         return JsonSerializer.Deserialize<IEnumerable<Player>>(json, Options) ?? [];
     }
     
     public IEnumerable<Player> GetCoaches()
     {
+        _logger.LogInformation("Getting coaches");
         using StreamReader streamReader = new(CoachesFileName);
         var json = streamReader.ReadToEnd();
+        _logger.LogInformation("Finished getting coaches");
         return JsonSerializer.Deserialize<IEnumerable<Player>>(json, Options) ?? [];
     }
 }
