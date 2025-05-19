@@ -32,7 +32,7 @@ public class DataService
         return JsonSerializer.Deserialize<IEnumerable<Player>>(json, _options) ?? [];
     }
     
-    public IEnumerable<Player> GetCoaches()
+    public IEnumerable<Coach> GetCoaches()
     {
         _logger.LogInformation("Getting coaches");
         using StreamReader streamReader = new(CoachesFileName);

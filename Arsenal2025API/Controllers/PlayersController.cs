@@ -6,9 +6,9 @@ namespace Arsenal2025API.Controllers;
 
 public class PlayersController : ControllerBase
 {
-    private readonly ILogger<DataService> _logger;
+    private readonly ILogger<PlayersController> _logger;
 
-    public PlayersController(DataService dataService, ILogger<DataService> logger)
+    public PlayersController(DataService dataService, ILogger<PlayersController> logger)
     {
         DataService = dataService;
         _logger = logger;
