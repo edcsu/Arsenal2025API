@@ -13,11 +13,13 @@ public static class Seeder
         if (!context.Players.Any())
         {
             context.AddRange(SeedData.PlayerList());
+            context.SaveChanges();
         }
         
         if (!context.Coaches.Any())
         {
             context.AddRange(SeedData.CoachList());
+            context.SaveChanges();
         }
     }
 }
