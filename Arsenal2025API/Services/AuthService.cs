@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Arsenal2025API.Services;
 
-public class Authservice : IAuthservice
+public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
-    private readonly ILogger<Authservice> _logger;
+    private readonly ILogger<AuthService> _logger;
 
-    public Authservice(ApplicationDbContext context, 
-        ILogger<Authservice> logger)
+    public AuthService(ApplicationDbContext context, 
+        ILogger<AuthService> logger)
     {
         _context = context;
         _logger = logger;

@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Arsenal2025API.Dtos;
 using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,6 +7,8 @@ namespace Arsenal2025API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
 public class CoachesController : ControllerBase
 {
     private readonly ILogger<CoachesController> _logger;

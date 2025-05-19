@@ -35,8 +35,7 @@ try
                     errorCodesToAdd: null);
                 opts.CommandTimeout(60);
             }));
-
-
+    
     builder.Services.AddSerilog((services, lc) => lc
         .ReadFrom.Configuration(builder.Configuration)
         .ReadFrom.Services(services)
@@ -58,7 +57,7 @@ try
 
     builder.Services.AddScoped<IPlayersService, PlayersService>();
     builder.Services.AddScoped<ICoachesService, CoachesService>();
-    builder.Services.AddScoped<IAuthservice, Authservice>();
+    builder.Services.AddScoped<IAuthService, AuthService>();
 
     var app = builder.Build();
         
