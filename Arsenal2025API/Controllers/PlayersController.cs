@@ -24,7 +24,8 @@ public class PlayersController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetCoachAsync( Guid id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetCoachAsync( Guid id, 
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to find a player with id: {Id}", id);
         var player = await _playersService.FindByIdAsync(id, cancellationToken);
@@ -38,12 +39,28 @@ public class PlayersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, 
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to create a player from: {Country}", createPlayer.Country);
         var player = await _playersService.CreateAsync(createPlayer, cancellationToken);
         
         _logger.LogInformation("Player with id: {Id} was created", player.Id);
         return Ok(player);
+    }
+    
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeletePlayerAsync( Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Trying to delete a player with id: {Id}", id);
+        var coach = await _playersService.DeleteByIdAsync(id, cancellationToken);
+        if (coach is false)
+        {
+            _logger.LogError("Player with id: {Id} was not deleted", id);
+            return NotFound();
+        }
+        _logger.LogInformation("Player with id: {Id} was deleted", id);
+        return Ok();
     }
 }

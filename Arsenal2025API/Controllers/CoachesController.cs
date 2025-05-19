@@ -28,7 +28,8 @@ public class CoachesController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetCoachAsync( Guid id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetCoachAsync( Guid id, 
+        CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to find a coach with id: {Id}", id);
         var coach = await _coachesService.FindByIdAsync(id, cancellationToken);

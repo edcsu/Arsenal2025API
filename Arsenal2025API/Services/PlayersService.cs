@@ -39,4 +39,20 @@ public class PlayersService : IPlayersService
         await _context.SaveChangesAsync(cancellationToken);
         return player;
     }
+
+    public async Task<bool> DeleteByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        var player = await _context.Players.FindAsync([id], 
+            cancellationToken: cancellationToken);
+        if (player is null)
+        {
+            _logger.LogError("Player with id {Id} was not found", id);
+            return false;
+        }
+        
+        _context.Players.Remove(player);
+        await _context.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }
