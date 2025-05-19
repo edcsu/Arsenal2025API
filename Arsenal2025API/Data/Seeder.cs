@@ -14,5 +14,10 @@ public static class Seeder
         {
             context.AddRange(SeedData.PlayerList());
         }
+        
+        if (!context.Coaches.Any())
+        {
+            context.AddRange(SeedData.CoachList());
+        }
     }
 }
