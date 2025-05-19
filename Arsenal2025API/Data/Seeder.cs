@@ -50,7 +50,7 @@ public static class Seeder
             },
             ];
 
-            context.AddRange();
+            context.AddRange(users);
             context.SaveChanges();
         }
     }

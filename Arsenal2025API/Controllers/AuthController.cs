@@ -76,7 +76,7 @@ public class AuthController: ControllerBase
         return new LoginResponse
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-            ExpiresAt = DateTime.UtcNow.AddHours(1),
+            ExpiresIn = 3600,
         };
     }
 }
