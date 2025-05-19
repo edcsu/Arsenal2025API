@@ -41,7 +41,6 @@ public class CoachesController : ControllerBase
         return Ok(coach);
     }
     
-    
     [HttpPost]
     public async Task<IActionResult> CreateCoachAsync(CreateCoach createCoach, 
         CancellationToken cancellationToken = default)
@@ -51,5 +50,20 @@ public class CoachesController : ControllerBase
         
         _logger.LogInformation("Coach with id: {Id} was created", coach.Id);
         return Ok(coach);
+    }
+    
+    [HttpDelete("{id:guid}")]
+    public async Task<IActionResult> DeleteCoachAsync( Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Trying to delete a coach with id: {Id}", id);
+        var coach = await _coachesService.DeleteByIdAsync(id, cancellationToken);
+        if (coach is false)
+        {
+            _logger.LogError("Coach with id: {Id} was not deleted", id);
+            return NotFound();
+        }
+        _logger.LogInformation("Coach with id: {Id} was deleted", id);
+        return Ok();
     }
 }

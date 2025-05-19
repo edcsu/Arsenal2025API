@@ -12,4 +12,7 @@ public interface ICoachesService
     
     Task<Coach> CreateAsync(CreateCoach createCoach, 
         CancellationToken cancellationToken = default);
+    
+    Task<bool> DeleteByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default);
 }

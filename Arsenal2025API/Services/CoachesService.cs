@@ -40,4 +40,20 @@ public class CoachesService : ICoachesService
         await _context.SaveChangesAsync(cancellationToken);
         return coach;
     }
+
+    public async Task<bool> DeleteByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        var coach = await _context.Coaches.FindAsync([id], 
+            cancellationToken: cancellationToken);
+        if (coach is null)
+        {
+            _logger.LogError("Coach with id {Id} was not found", id);
+            return false;
+        }
+        
+        _context.Coaches.Remove(coach);
+        await _context.SaveChangesAsync(cancellationToken);
+        return true;
+    }
 }
