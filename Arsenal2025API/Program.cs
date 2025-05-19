@@ -1,5 +1,7 @@
 using System.Text.Json.Serialization;
+using Arsenal2025API.Data;
 using Arsenal2025API.Services;
+using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -13,6 +15,7 @@ try
 {
     Log.Information("Starting up Env:{Environment}", environment);
     var builder = WebApplication.CreateBuilder(args);
+    var config = builder.Configuration;
 
     // Add services to the container.
     builder.Services.AddControllers().AddJsonOptions(options =>
@@ -20,6 +23,19 @@ try
         options.JsonSerializerOptions.WriteIndented = true;
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
+    
+    
+    builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
+        options.UseNpgsql(config.GetConnectionString("DefaultConnection"), 
+            opts =>
+            {
+                opts.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(30),
+                    errorCodesToAdd: null);
+                opts.CommandTimeout(60);
+            }));
+
 
     builder.Services.AddSerilog((services, lc) => lc
         .ReadFrom.Configuration(builder.Configuration)
@@ -62,6 +78,8 @@ try
     app.UseAuthorization();
 
     app.MapControllers();
+
+    Seeder.Initialize(app);
 
     app.Run();
 

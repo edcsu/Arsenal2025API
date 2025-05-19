@@ -1,12 +1,14 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Arsenal2025API.Models;
 
-public class Coach
+public class Coach : BaseModel
 {
-    public Guid Id { get; set; }
-
-    public string Name { get; set; }
+    [Column(TypeName = "varchar(70)")]
+    public required string Name { get; set; }
 
     public int TotalTrophies { get; set; }
 
-    public string Tenure { get; set; }
+    [Column(TypeName = "varchar(20)")]
+    public required string Tenure { get; set; }
 }
