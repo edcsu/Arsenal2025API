@@ -1,4 +1,6 @@
 using Arsenal2025API.Data;
+using Arsenal2025API.Dtos;
+using Arsenal2025API.Mappers;
 using Arsenal2025API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +28,15 @@ public class PlayersService : IPlayersService
         CancellationToken cancellationToken = default)
     {
         var player = await _context.Players.FindAsync([id], cancellationToken: cancellationToken);
+        return player;
+    }
+
+    public async Task<Player> CreateAsync(CreatePlayer createPlayer, 
+        CancellationToken cancellationToken = default)
+    {
+        var player = createPlayer.ToPlayer();
+        _context.Players.Add(player);
+        await _context.SaveChangesAsync(cancellationToken);
         return player;
     }
 }

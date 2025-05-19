@@ -1,4 +1,4 @@
-using Arsenal2025API.Models;
+using Arsenal2025API.Dtos;
 using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,18 +23,27 @@ public class PlayersController : ControllerBase
         return Ok(response);
     }
     
-    
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCoachAsync( Guid id, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to find a player with id: {Id}", id);
-        var coach = await _playersService.FindByIdAsync(id, cancellationToken);
-        if (coach is null)
+        var player = await _playersService.FindByIdAsync(id, cancellationToken);
+        if (player is null)
         {
             _logger.LogError("Player with id: {Id} was not found", id);
             return NotFound();
         }
         _logger.LogInformation("Player with id: {Id} was found", id);
-        return Ok(coach);
+        return Ok(player);
+    }
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateCoachAsync(CreatePlayer createPlayer, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Trying to create a player from: {Country}", createPlayer.Country);
+        var player = await _playersService.CreateAsync(createPlayer, cancellationToken);
+        
+        _logger.LogInformation("Player with id: {Id} was created", player.Id);
+        return Ok(player);
     }
 }
