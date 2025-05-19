@@ -9,18 +9,17 @@ namespace Arsenal2025API.Controllers;
 public class PlayersController : ControllerBase
 {
     private readonly ILogger<PlayersController> _logger;
-
-    public PlayersController(DataService dataService, ILogger<PlayersController> logger)
+    private readonly IPlayersService _playersService;
+    public PlayersController(ILogger<PlayersController> logger, IPlayersService playersService)
     {
-        DataService = dataService;
         _logger = logger;
+        _playersService = playersService;
     }
 
-    public DataService DataService { get; }
-
     [HttpGet]
-    public List<Player> GetAllPlayers()
+    public async Task<IActionResult> GetAllPlayers()
     {
-        return DataService.GetPlayers().ToList();
+        var response = await _playersService.GetAll();
+        return Ok(response);
     }
 }
