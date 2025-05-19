@@ -7,7 +7,7 @@ public class Player : BaseModel
     [Column(TypeName = "varchar(70)")]
     public required string Name { get; set; }
 
-    public int Age { get; set; }
+    public DateOnly DateOfBirth { get; set; }
 
     public required Position Position { get; set; }
 

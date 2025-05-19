@@ -33,7 +33,7 @@ namespace Arsenal2025API.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "varchar(70)", nullable: false),
-                    Age = table.Column<int>(type: "integer", nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false),
                     Country = table.Column<string>(type: "varchar(70)", nullable: false),
                     CleanSheets = table.Column<int>(type: "integer", nullable: false),

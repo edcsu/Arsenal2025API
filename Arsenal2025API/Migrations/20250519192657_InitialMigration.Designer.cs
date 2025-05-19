@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arsenal2025API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250519185800_InitialMigration")]
+    [Migration("20250519192657_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -59,9 +59,6 @@ namespace Arsenal2025API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("Age")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Assists")
                         .HasColumnType("integer");
 
@@ -74,6 +71,9 @@ namespace Arsenal2025API.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
 
                     b.Property<int>("GoalsScored")
                         .HasColumnType("integer");
