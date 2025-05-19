@@ -38,6 +38,6 @@ public class DataService
         using StreamReader streamReader = new(CoachesFileName);
         var json = streamReader.ReadToEnd();
         _logger.LogInformation("Finished getting coaches");
-        return JsonSerializer.Deserialize<IEnumerable<Player>>(json, _options) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<Coach>>(json, _options) ?? [];
     }
 }

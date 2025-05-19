@@ -9,6 +9,4 @@ public class Coach
     public int TotalTrophies { get; set; }
 
     public string Tenure { get; set; }
-
-    public string Country { get; set; }
 }

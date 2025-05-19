@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Arsenal2025API.Controllers;
 
+[Route("api/[controller]")]
+[ApiController]
 public class PlayersController : ControllerBase
 {
     private readonly ILogger<PlayersController> _logger;

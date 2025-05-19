@@ -1,138 +1,138 @@
 [
   {
-    "id": "12345678-9abc-def0-1234-56789b2",
+    "id": "0196e9b8-9d1e-7d03-8799-4f9b0b2610bd",
     "name": "Mikel Arteta",
     "totalTrophies": 2,
     "tenure": "2019 – present"
   },
   {
-    "id": "01234567-89ab-cdef-0123-456789b1",
+    "id": "0196e9b8-9d1e-7b11-81cd-5f5a1e457f9d",
     "name": "Freddie Ljungberg",
     "totalTrophies": 0,
     "tenure": "2019 (interim)"
   },
   {
-    "id": "f0123456-789a-bcde-f012-3456789b0",
+    "id": "0196e9b8-9d1e-7bc3-8bbd-4f42894fca48",
     "name": "Unai Emery",
     "totalTrophies": 0,
     "tenure": "2018 – 2019"
   },
   {
-    "id": "ef012345-6789-abcd-ef01-23456789af",
+    "id": "0196e9b8-9d1e-7a4b-ab97-d91f6c5b8b4d",
     "name": "Pat Rice",
     "totalTrophies": 0,
     "tenure": "1996 (caretaker)"
   },
   {
-    "id": "12345678-9abc-def0-1234-56789abcdef0",
+    "id": "0196e9b8-9d1e-7f9e-ab96-1f7403a56f27",
     "name": "Bruce Rioch",
     "totalTrophies": 0,
     "tenure": "1995 – 1996"
   },
   {
-    "id": "def01234-5678-9abc-def0-123456789e",
+    "id": "0196e9b8-9d1e-7089-a636-d52cd26dc6ba",
     "name": "Stewart Houston",
     "totalTrophies": 0,
     "tenure": "1995 (caretaker)"
   },
   {
-    "id": "abcdef01-2345-6789-abcd-ef0123456789",
+    "id": "0196e9b8-9d1e-7d25-9b46-381e873890d0",
     "name": "George Graham",
     "totalTrophies": 6,
     "tenure": "1986 – 1995"
   },
   {
-    "id": "cdef0123-4567-89ab-cdef-012345678d",
+    "id": "0196e9b8-9d1e-7e6a-981f-09eea1f24634",
     "name": "Steve Burtenshaw",
     "totalTrophies": 0,
     "tenure": "1986 (caretaker)"
   },
   {
-    "id": "23456789-abcd-ef01-2345-6789abcdef01",
+    "id": "0196e9b8-9d1e-7be4-8ace-c0a4616084e3",
     "name": "Don Howe",
     "totalTrophies": 0,
     "tenure": "1983 – 1986"
   },
   {
-    "id": "01234567-89ab-cdef-0123-456789abcdef",
+    "id": "0196e9b8-9d1e-7114-9881-e65d3ffdbbe7",
     "name": "Terry Neill",
     "totalTrophies": 1,
     "tenure": "1976 – 1983"
   },
   {
-    "id": "cdef0123-4567-89ab-cdef-0123456789ab",
+    "id": "0196e9b8-9d1e-737d-b167-fbdb2aa09b15",
     "name": "Bertie Mee",
     "totalTrophies": 3,
     "tenure": "1966 – 1976"
   },
   {
-    "id": "3456789a-bcde-f012-3456-789abcdef012",
+    "id": "0196e9b8-9d1e-73c7-b056-03010f46bda1",
     "name": "Billy Wright",
     "totalTrophies": 0,
     "tenure": "1962 – 1966"
   },
   {
-    "id": "456789ab-cdef-0123-4567-89abcdef0123",
+    "id": "0196e9ba-d349-7085-a465-3db50ca7833c",
     "name": "George Swindin",
     "totalTrophies": 0,
     "tenure": "1958 – 1962"
   },
   {
-    "id": "56789abc-def0-1234-5678-9abcdef01234",
+    "id": "0196e9ba-d349-79de-afed-f09bec826752",
     "name": "Jack Crayston",
     "totalTrophies": 0,
     "tenure": "1956 – 1958"
   },
   {
-    "id": "f0123456-789a-bcde-f012-3456789abcd",
+    "id": "0196e9ba-d349-742d-8ec1-39beb3cd56cd",
     "name": "Tom Whittaker",
     "totalTrophies": 5,
     "tenure": "1947 – 1956"
   },
   {
-    "id": "ef012345-6789-abcd-ef01-23456789abcd",
+    "id": "0196e9ba-d349-7bb5-bae2-74a45812fa2c",
     "name": "George Allison",
     "totalTrophies": 4,
     "tenure": "1934 – 1947"
   },
   {
-    "id": "def01234-5678-9abc-def0-123456789abc",
+    "id": "0196e9ba-d349-7897-b9a8-adb53798abb6",
     "name": "Herbert Chapman",
     "totalTrophies": 6,
     "tenure": "1925 – 1934"
   },
   {
-    "id": "6789abcd-ef01-2345-6789-abcdef012345",
+    "id": "0196e9ba-d349-7207-a8d3-b4048ac50019",
     "name": "Leslie Knighton",
     "totalTrophies": 0,
     "tenure": "1919 – 1925"
   },
   {
-    "id": "789abcdef0-1234-5678-9abc-def012345678",
+    "id": "0196e9ba-d349-75a3-8ee4-57a3eee92e9b",
     "name": "George Morrell",
     "totalTrophies": 0,
     "tenure": "1908 – 1915"
   },
   {
-    "id": "89abcdef01-2345-6789-abcd-ef0123456789",
+    "id": "0196e9ba-d349-7e9d-906a-1085e4f598d0",
     "name": "Phil Kelso",
     "totalTrophies": 0,
     "tenure": "1904 – 1908"
   },
   {
-    "id": "9abcdef012-3456-789a-bcde-f0123456789a",
+    "id": "0196e9ba-d349-7811-95e1-1018351615b2",
     "name": "Harry Bradshaw",
     "totalTrophies": 0,
     "tenure": "1899 – 1904"
   },
   {
-    "id": "abcdef01-2345-6789-abcd-ef012345678b",
+    "id": "0196e9ba-d349-7288-aab5-fbeb76062df9",
     "name": "Thomas Mitchell",
     "totalTrophies": 0,
     "tenure": "1897 – 1899"
   },
   {
-    "id": "bcdefa01-2345-6789-abcd-ef012345678c",
+    "id": "0196e9ba-d349-773b-92ff-50a2a9aae392",
     "name": "Sam Hollis",
     "totalTrophies": 0,
     "tenure": "1895 – 1897"
