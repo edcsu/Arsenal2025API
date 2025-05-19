@@ -18,7 +18,7 @@ public class DataService
     private string PlayersFileName => Path.Combine(WebHostEnvironment.ContentRootPath, "Data", "players.json");
     private string CoachesFileName => Path.Combine(WebHostEnvironment.ContentRootPath, "Data", "coaches.json");
 
-    private readonly JsonSerializerOptions Options = new()
+    private readonly JsonSerializerOptions _options = new()
     {
         PropertyNameCaseInsensitive = true
     };
@@ -29,7 +29,7 @@ public class DataService
         using StreamReader streamReader = new(PlayersFileName);
         var json = streamReader.ReadToEnd();
         _logger.LogInformation("Finished getting players");
-        return JsonSerializer.Deserialize<IEnumerable<Player>>(json, Options) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<Player>>(json, _options) ?? [];
     }
     
     public IEnumerable<Player> GetCoaches()
@@ -38,6 +38,6 @@ public class DataService
         using StreamReader streamReader = new(CoachesFileName);
         var json = streamReader.ReadToEnd();
         _logger.LogInformation("Finished getting coaches");
-        return JsonSerializer.Deserialize<IEnumerable<Player>>(json, Options) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<Player>>(json, _options) ?? [];
     }
 }
