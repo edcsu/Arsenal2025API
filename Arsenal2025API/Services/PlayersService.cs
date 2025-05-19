@@ -16,9 +16,16 @@ public class PlayersService : IPlayersService
         _logger = logger;
     }
 
-    public async Task<List<Player>> GetAll(CancellationToken cancellationToken = default)
+    public async Task<List<Player>> GetAllPlayersAsync(CancellationToken cancellationToken = default)
     {
         var players = await _context.Players.ToListAsync(cancellationToken);
         return players;
+    }
+
+    public async Task<Player?> FindByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        var player = await _context.Players.FindAsync([id], cancellationToken: cancellationToken);
+        return player;
     }
 }

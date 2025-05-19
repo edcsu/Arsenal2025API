@@ -27,18 +27,17 @@ public class CoachesController : ControllerBase
         return Ok(coaches);
     }
     
-    
     [HttpGet("{id:guid}")]
     public async Task<IActionResult> GetCoachAsync( Guid id, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Trying to find coach with id: {Id}", id);
+        _logger.LogInformation("Trying to find a coach with id: {Id}", id);
         var coach = await _coachesService.FindByIdAsync(id, cancellationToken);
         if (coach is null)
         {
             _logger.LogError("Coach with id: {Id} was not found", id);
             return NotFound();
         }
-        _logger.LogInformation("Coach with id: {Id} was not found", id);
+        _logger.LogInformation("Coach with id: {Id} was found", id);
         return Ok(coach);
     }
 }
