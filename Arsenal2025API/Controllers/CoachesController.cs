@@ -21,8 +21,6 @@ public class CoachesController : ControllerBase
     [HttpGet]
     public List<Coach> GetCoaches()
     {
-        foreach (var coach in Enumerable.Range(0,12))
-            _logger.LogInformation($"Coach {Guid.CreateVersion7().ToString()}");
         return DataService.GetCoaches().ToList();
     }
 }
