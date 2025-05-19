@@ -1,4 +1,6 @@
 using Arsenal2025API.Data;
+using Arsenal2025API.Dtos;
+using Arsenal2025API.Mappers;
 using Arsenal2025API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +27,17 @@ public class CoachesService : ICoachesService
     public async Task<Coach?> FindByIdAsync(Guid id, 
         CancellationToken cancellationToken = default)
     {
-        var coach = await _context.Coaches.FindAsync([id], cancellationToken: cancellationToken);
+        var coach = await _context.Coaches.FindAsync([id], 
+            cancellationToken: cancellationToken);
+        return coach;
+    }
+
+    public async Task<Coach> CreateAsync(CreateCoach createCoach, 
+        CancellationToken cancellationToken = default)
+    {
+        var coach = createCoach.ToCoach();
+        _context.Coaches.Add(coach);
+        await _context.SaveChangesAsync(cancellationToken);
         return coach;
     }
 }

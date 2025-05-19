@@ -1,3 +1,4 @@
+using Arsenal2025API.Dtos;
 using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,18 @@ public class CoachesController : ControllerBase
             return NotFound();
         }
         _logger.LogInformation("Coach with id: {Id} was found", id);
+        return Ok(coach);
+    }
+    
+    
+    [HttpPost]
+    public async Task<IActionResult> CreateCoachAsync(CreateCoach createCoach, 
+        CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Trying to create a coach with: {TotalTrophies} trophies", createCoach.TotalTrophies);
+        var coach = await _coachesService.CreateAsync(createCoach, cancellationToken);
+        
+        _logger.LogInformation("Coach with id: {Id} was created", coach.Id);
         return Ok(coach);
     }
 }

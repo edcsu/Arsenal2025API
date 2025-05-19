@@ -38,7 +38,7 @@ public class PlayersController : ControllerBase
     }
     
     [HttpPost]
-    public async Task<IActionResult> CreateCoachAsync(CreatePlayer createPlayer, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to create a player from: {Country}", createPlayer.Country);
         var player = await _playersService.CreateAsync(createPlayer, cancellationToken);
