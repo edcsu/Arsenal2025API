@@ -57,6 +57,7 @@ try
     builder.Services.AddOpenApi();
 
     builder.Services.AddScoped<IPlayersService, PlayersService>();
+    builder.Services.AddScoped<ICoachesService, CoachesService>();
 
     var app = builder.Build();
         
