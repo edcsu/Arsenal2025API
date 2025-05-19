@@ -6,9 +6,9 @@ public enum Position
     CentreBack,
     LeftBack,
     RightBack,
-    DefensiveMidfield,
-    CentralMidfield,
-    AttackingMidfield,
+    DefensiveMidfielder,
+    CentralMidfielder,
+    AttackingMidfielder,
     LeftWinger,
     RightWinger,
     Striker

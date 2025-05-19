@@ -9,5 +9,10 @@ public static class Seeder
         using var serviceScope = app.ApplicationServices.CreateScope();
         var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
         context.Database.Migrate();
+
+        if (!context.Players.Any())
+        {
+            context.AddRange(SeedData.PlayerList());
+        }
     }
 }
