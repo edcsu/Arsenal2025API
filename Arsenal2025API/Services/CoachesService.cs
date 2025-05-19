@@ -16,9 +16,16 @@ public class CoachesService : ICoachesService
         _logger = logger;
     }
 
-    public async Task<List<Coach>> GetAll(CancellationToken cancellationToken = default)
+    public async Task<List<Coach>> GetAllCoachesAsync(CancellationToken cancellationToken = default)
     {
         var coaches = await _context.Coaches.ToListAsync(cancellationToken);
         return coaches;
+    }
+
+    public async Task<Coach?> FindByIdAsync(Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        var coach = await _context.Coaches.FindAsync([id], cancellationToken: cancellationToken);
+        return coach;
     }
 }
