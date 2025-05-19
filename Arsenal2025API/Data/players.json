@@ -1,0 +1,242 @@
+[
+  {
+    "guid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "name": "David Raya",
+    "age": 29,
+    "position": "Goalkeeper",
+    "country": "Spain",
+    "cleanSheets": 16,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "f9e8d7c6-b5a4-3210-fedc-ba9876543210",
+    "name": "Neto",
+    "age": 35,
+    "position": "Goalkeeper",
+    "country": "Brazil",
+    "cleanSheets": 1,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "William Saliba",
+    "age": 24,
+    "position": "Centre-Back",
+    "country": "France",
+    "cleanSheets": 18,
+    "goalsScored": 2,
+    "assists": 1
+  },
+  {
+    "guid": "bcdefa01-2345-6789-abcd-ef0123456789",
+    "name": "Gabriel Magalhães",
+    "age": 27,
+    "position": "Centre-Back",
+    "country": "Brazil",
+    "cleanSheets": 17,
+    "goalsScored": 4,
+    "assists": 0
+  },
+  {
+    "guid": "98765432-10fe-dcba-9876-543210fedcba",
+    "name": "Jakub Kiwior",
+    "age": 25,
+    "position": "Centre-Back",
+    "country": "Poland",
+    "cleanSheets": 8,
+    "goalsScored": 1,
+    "assists": 0
+  },
+  {
+    "guid": "ef012345-6789-abcd-ef01-23456789abcd",
+    "name": "Riccardo Calafiori",
+    "age": 23,
+    "position": "Left-Back",
+    "country": "Italy",
+    "cleanSheets": 0,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "456789ab-cdef-0123-4567-89abcdef0123",
+    "name": "Myles Lewis-Skelly",
+    "age": 18,
+    "position": "Left-Back",
+    "country": "England",
+    "cleanSheets": 0,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "cdef0123-4567-89ab-cdef-0123456789ab",
+    "name": "Oleksandr Zinchenko",
+    "age": 28,
+    "position": "Left-Back",
+    "country": "Ukraine",
+    "cleanSheets": 10,
+    "goalsScored": 1,
+    "assists": 2
+  },
+  {
+    "guid": "89abcdef-0123-4567-89ab-cdef01234567",
+    "name": "Kieran Tierney",
+    "age": 27,
+    "position": "Left-Back",
+    "country": "Scotland",
+    "cleanSheets": 2,
+    "goalsScored": 0,
+    "assists": 1
+  },
+  {
+    "guid": "23456789-abcd-ef01-2345-6789abcdef01",
+    "name": "Ben White",
+    "age": 27,
+    "position": "Right-Back",
+    "country": "England",
+    "cleanSheets": 15,
+    "goalsScored": 0,
+    "assists": 4
+  },
+  {
+    "guid": "def01234-5678-9abc-def0-123456789abc",
+    "name": "Jurrien Timber",
+    "age": 23,
+    "position": "Right-Back",
+    "country": "Netherlands",
+    "cleanSheets": 1,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "6789abcd-ef01-2345-6789-abcdef012345",
+    "name": "Takehiro Tomiyasu",
+    "age": 26,
+    "position": "Right-Back",
+    "country": "Japan",
+    "cleanSheets": 12,
+    "goalsScored": 0,
+    "assists": 1
+  },
+  {
+    "guid": "cdabef01-2345-6789-abcd-ef0123456789",
+    "name": "Thomas Partey",
+    "age": 31,
+    "position": "Defensive Midfield",
+    "country": "Ghana",
+    "cleanSheets": 7,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "3456789a-bcde-f012-3456-789abcdef012",
+    "name": "Jorginho",
+    "age": 33,
+    "position": "Defensive Midfield",
+    "country": "Italy",
+    "cleanSheets": 9,
+    "goalsScored": 0,
+    "assists": 1
+  },
+  {
+    "guid": "f0123456-789a-bcde-f012-3456789abcd",
+    "name": "Declan Rice",
+    "age": 26,
+    "position": "Central Midfield",
+    "country": "England",
+    "cleanSheets": 16,
+    "goalsScored": 7,
+    "assists": 6
+  },
+  {
+    "guid": "abcdef01-2345-6789-abcd-ef0123456789",
+    "name": "Mikel Merino",
+    "age": 28,
+    "position": "Central Midfield",
+    "country": "Spain",
+    "cleanSheets": 0,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "789abcdef0-1234-5678-9abc-def012345678",
+    "name": "Martin Ødegaard",
+    "age": 26,
+    "position": "Attacking Midfield",
+    "country": "Norway",
+    "cleanSheets": 15,
+    "goalsScored": 11,
+    "assists": 11
+  },
+  {
+    "guid": "456789ab-cdef-0123-4567-89abcdef0123",
+    "name": "Gabriel Martinelli",
+    "age": 23,
+    "position": "Left Winger",
+    "country": "Brazil",
+    "cleanSheets": 13,
+    "goalsScored": 8,
+    "assists": 5
+  },
+  {
+    "guid": "bcdefa01-2345-6789-abcd-ef0123456789",
+    "name": "Leandro Trossard",
+    "age": 30,
+    "position": "Left Winger",
+    "country": "Belgium",
+    "cleanSheets": 11,
+    "goalsScored": 12,
+    "assists": 7
+  },
+  {
+    "guid": "01234567-89ab-cdef-0123-456789abcdef",
+    "name": "Bukayo Saka",
+    "age": 23,
+    "position": "Right Winger",
+    "country": "England",
+    "cleanSheets": 15,
+    "goalsScored": 20,
+    "assists": 13
+  },
+  {
+    "guid": "ef012345-6789-abcd-ef01-23456789abcd",
+    "name": "Ethan Nwaneri",
+    "age": 18,
+    "position": "Right Winger",
+    "country": "England",
+    "cleanSheets": 0,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "98765432-10fe-dcba-9876-543210fedcba",
+    "name": "Raheem Sterling",
+    "age": 30,
+    "position": "Right Winger",
+    "country": "England",
+    "cleanSheets": 0,
+    "goalsScored": 0,
+    "assists": 0
+  },
+  {
+    "guid": "a1b2c3d4-e5f6-7890-1234-567890abcdef",
+    "name": "Kai Havertz",
+    "age": 25,
+    "position": "Centre-Forward",
+    "country": "Germany",
+    "cleanSheets": 14,
+    "goalsScored": 14,
+    "assists": 7
+  },
+  {
+    "guid": "f9e8d7c6-b5a4-3210-fedc-ba9876543210",
+    "name": "Gabriel Jesus",
+    "age": 28,
+    "position": "Centre-Forward",
+    "country": "Brazil",
+    "cleanSheets": 12,
+    "goalsScored": 5,
+    "assists": 5
+  }
+]
