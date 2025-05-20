@@ -1,7 +1,11 @@
+using System.Text;
 using System.Text.Json.Serialization;
 using Arsenal2025API.Data;
+using Arsenal2025API.Helpers;
 using Arsenal2025API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using Serilog;
 
@@ -51,9 +55,29 @@ try
         .Enrich.WithThreadId()
         .Enrich.WithThreadName()
         .Enrich.WithAssemblyName());
+    
+    // Configure JWT authentication
+    builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddJwtBearer(options =>
+        {
+            options.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                ValidAudience = builder.Configuration["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+            };
+        });
 
     // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-    builder.Services.AddOpenApi();
+    builder.Services.AddOpenApi(options =>
+    {
+        options.AddDocumentTransformer<AuthSecuritySchemeTransformer>();
+    });
 
     builder.Services.AddScoped<IPlayersService, PlayersService>();
     builder.Services.AddScoped<ICoachesService, CoachesService>();
@@ -71,6 +95,11 @@ try
         {
             options.Title = "Arsenal 2024/2025 Demo API";
             options.ShowSidebar = true;
+            options.AddPreferredSecuritySchemes("Bearer");
+            options.AddHttpAuthentication("Bearer", auth =>
+            {
+                auth.Token = string.Empty;
+            });
         });
     }
 
