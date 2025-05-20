@@ -6,8 +6,14 @@ using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Exporter;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Scalar.AspNetCore;
 using Serilog;
+using Serilog.Sinks.OpenTelemetry;
 
 var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? string.Empty;
 Log.Logger = new LoggerConfiguration()
@@ -20,6 +26,7 @@ try
     Log.Information("Starting up Env:{Environment}", environment);
     var builder = WebApplication.CreateBuilder(args);
     var config = builder.Configuration;
+    var otelConfig = config.GetOtelConfing();
 
     // Add services to the container.
     builder.Services.AddControllers().AddJsonOptions(options =>
@@ -27,10 +34,9 @@ try
         options.JsonSerializerOptions.WriteIndented = true;
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
-    
-    
+
     builder.Services.AddDbContextPool<ApplicationDbContext>(options =>
-        options.UseNpgsql(config.GetConnectionString("DefaultConnection"), 
+        options.UseNpgsql(config.GetConnectionString("DefaultConnection"),
             opts =>
             {
                 opts.EnableRetryOnFailure(
@@ -39,24 +45,40 @@ try
                     errorCodesToAdd: null);
                 opts.CommandTimeout(60);
             }));
-    
-    builder.Services.AddSerilog((services, lc) => lc
-        .ReadFrom.Configuration(builder.Configuration)
-        .ReadFrom.Services(services)
-        .Enrich.FromLogContext()
-        .Enrich.WithAssemblyName()
-        .Enrich.WithAssemblyVersion()
-        .Enrich.WithClientIp()
-        .Enrich.WithCorrelationId()
-        .Enrich.WithEnvironmentName()
-        .Enrich.WithMachineName()
-        .Enrich.WithProcessId()
-        .Enrich.WithProcessName()
-        .Enrich.WithThreadId()
-        .Enrich.WithThreadName()
-        .Enrich.WithAssemblyName());
-    
-    // Configure JWT authentication
+
+    builder.Services.AddSerilog((services, lc) =>
+    {
+        if (otelConfig.Enabled)
+        {
+            lc.WriteTo.OpenTelemetry(options =>
+            {
+                options.Endpoint = otelConfig.Endpoint;
+                options.Protocol = OtlpProtocol.Grpc;
+                options.ResourceAttributes = new Dictionary<string, object>
+                {
+                    ["service.name"] = AuthHelpers.ApplicationName,
+                };
+            });
+        }
+        
+        lc
+            .ReadFrom.Configuration(builder.Configuration)
+            .ReadFrom.Services(services)
+            .Enrich.FromLogContext()
+            .Enrich.WithAssemblyName()
+            .Enrich.WithAssemblyVersion()
+            .Enrich.WithClientIp()
+            .Enrich.WithCorrelationId()
+            .Enrich.WithEnvironmentName()
+            .Enrich.WithMachineName()
+            .Enrich.WithProcessId()
+            .Enrich.WithProcessName()
+            .Enrich.WithThreadId()
+            .Enrich.WithThreadName()
+            .Enrich.WithAssemblyName();
+    });
+
+// Configure JWT authentication
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -82,6 +104,50 @@ try
     builder.Services.AddScoped<IPlayersService, PlayersService>();
     builder.Services.AddScoped<ICoachesService, CoachesService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+
+    if (otelConfig.Enabled)
+    {
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(AuthHelpers.ApplicationName))
+            .WithMetrics(metric =>
+            {
+                metric.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                metric.AddOtlpExporter(options => 
+                {
+                    options.Endpoint = new Uri(otelConfig.Endpoint);
+                    options.Protocol = OtlpExportProtocol.Grpc;
+                });
+            })
+            .WithTracing(trace =>
+            {
+                trace.AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation();
+
+                trace.AddOtlpExporter(options =>
+                {
+                    options.Endpoint = new Uri(otelConfig.Endpoint);
+                    options.Protocol = OtlpExportProtocol.Grpc;
+                });
+            });
+                
+        builder.Logging.AddOpenTelemetry(options => 
+        {
+            if (environment == Environments.Development)
+            {
+                options.AddConsoleExporter()
+                    .SetResourceBuilder(ResourceBuilder.CreateDefault()
+                        .AddService(AuthHelpers.ApplicationName));
+            }
+
+            options.AddOtlpExporter(otlpExporterOptions =>
+            {
+                otlpExporterOptions.Endpoint = new Uri(otelConfig.Endpoint);
+                otlpExporterOptions.Protocol = OtlpExportProtocol.Grpc;
+            });
+        });
+    }
 
     var app = builder.Build();
         
