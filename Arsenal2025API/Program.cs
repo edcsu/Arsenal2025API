@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json.Serialization;
+using System.Threading.RateLimiting;
 using Arsenal2025API.Data;
 using Arsenal2025API.Helpers;
 using Arsenal2025API.Services;
@@ -105,6 +106,42 @@ try
     builder.Services.AddScoped<ICoachesService, CoachesService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
 
+    #region Otel
+
+    #region ratelimiting
+    var limitOptions = new RateLimitConfig();
+    builder.Configuration.GetSection(RateLimitConfig.ConfigName).Bind(limitOptions);
+        
+    builder.Services.AddRateLimiter(options =>
+    {
+        options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(context =>
+        {
+            var path = context.Request.Path.Value ?? string.Empty;
+            var ipAddress = context.Connection.RemoteIpAddress?.ToString() ?? "unknown";
+            Log.Information("This request is coming from: {IpAddress}", ipAddress);
+                
+            if (!limitOptions.AllowedPaths.Any(allowedPath => path.Contains(allowedPath, StringComparison.OrdinalIgnoreCase)))
+            {
+                Log.Information("Rate limiting applied");
+                return RateLimitPartition.GetFixedWindowLimiter(
+                    ipAddress,
+                    _ => new FixedWindowRateLimiterOptions
+                    {
+                        PermitLimit = limitOptions.PermitLimit,             
+                        Window = TimeSpan.FromSeconds(limitOptions.Window), 
+                        QueueLimit = limitOptions.QueueLimit,              
+                        QueueProcessingOrder = QueueProcessingOrder.OldestFirst
+                    });
+            }
+
+            // Allow unlimited requests for "api" paths
+            Log.Information("No rate limiting applied");
+            return RateLimitPartition.GetNoLimiter(context.Connection.RemoteIpAddress?.ToString() ?? "unknown");
+        });
+    });
+    #endregion
+
+    #endregion
     if (otelConfig.Enabled)
     {
         builder.Services.AddOpenTelemetry()
@@ -174,6 +211,8 @@ try
 
     app.UseAuthentication();
     app.UseAuthorization();
+
+    app.UseRateLimiter();
 
     app.MapControllers();
 

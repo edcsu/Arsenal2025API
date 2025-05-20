@@ -6,4 +6,9 @@ public static class ConfigExtensions
     {
         return configuration.GetSection(OtelConfing.ConfigName).Get<OtelConfing>();
     }
+    
+    public static RateLimitConfig GetConfigName(this IConfiguration configuration)
+    {
+        return configuration.GetSection(RateLimitConfig.ConfigName).Get<RateLimitConfig>();
+    }
 }
