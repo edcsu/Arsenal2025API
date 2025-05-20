@@ -95,6 +95,7 @@ try
         {
             options.Title = "Arsenal 2024/2025 Demo API";
             options.ShowSidebar = true;
+            options.Theme = ScalarTheme.Mars;
             options.AddPreferredSecuritySchemes("Bearer");
             options.AddHttpAuthentication("Bearer", auth =>
             {
