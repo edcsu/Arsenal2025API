@@ -213,6 +213,8 @@ try
 
     app.UseRateLimiter();
 
+    app.UseErrorHandling();
+
     app.MapControllers();
 
     Seeder.Initialize(app);
