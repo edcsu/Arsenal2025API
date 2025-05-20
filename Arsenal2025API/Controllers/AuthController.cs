@@ -4,8 +4,10 @@ using System.Security.Claims;
 using System.Text;
 using Arsenal2025API.Dtos;
 using Arsenal2025API.Helpers;
+using Arsenal2025API.Mappers;
 using Arsenal2025API.Models;
 using Arsenal2025API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 
@@ -34,7 +36,7 @@ public class AuthController: ControllerBase
     public async Task<ActionResult<LoginResponse>> Login([FromBody]LoginRequest request, 
         CancellationToken cancellationToken = default)
     {
-        var user = await _authService.FindUserByUsername(request.Username, cancellationToken);
+        var user = await _authService.FindUserByUsernameAsync(request.Username, cancellationToken);
 
         if (user is null || 
             !AuthHelpers.VerifyPassword(request.Password, user.PasswordHash))
@@ -51,7 +53,56 @@ public class AuthController: ControllerBase
         }
 
         var loginResponse = GenerateJwtToken(user);
+        _logger.LogInformation("Generated token for user {Username}", request.Username);
         return Ok(loginResponse);
+    }
+    
+    [HttpPost("admins")]
+    [Authorize(Roles = "Admin, Supervisor")]
+    public async Task<ActionResult<UserResponse>> CreateAdmin(CreateUserRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        // Check if a username already exists
+        var saccoAdminWithUsername = await _authService.FindUserByUsernameAsync(request.Username, cancellationToken);
+        if (saccoAdminWithUsername is not null)
+        {
+            _logger.LogError("User {Username} already exists", request.Username);
+            return BadRequest("Username already exists");
+        }
+
+        // Check if email already exists
+        var saccoAdminWithEmail = await _authService.FindUserByEmailAsync(request.Email, cancellationToken);
+        if (saccoAdminWithEmail is not null)
+        {
+            _logger.LogError("Email for {Username} already exists", request.Username);
+            return BadRequest("Email already exists");
+        }
+
+        var user = await _authService.CreateUserAsync(request, cancellationToken);
+
+        var response = user.ToUserResponse();
+
+        return CreatedAtAction(nameof(GetUser), new { id = response.Id }, response);
+    }
+    
+    [HttpGet("admins/{id:guid}")]
+    [Authorize(Roles = "Admin, Supervisor")]
+    public async Task<ActionResult<UserResponse>> GetUser(Guid id, 
+        CancellationToken cancellationToken = default)
+    {
+        var user = await _authService.FindUserByIdAsync(id, cancellationToken);
+
+        if (user is null)
+        {
+            _logger.LogError("User with id: {Id} does not exists", id);
+            return NotFound();
+        }
+
+        
+        var response = user.ToUserResponse();
+        _logger.LogError("User with Id: {Id} exists", id);
+
+        return Ok(response);
     }
     
     private LoginResponse GenerateJwtToken(User user)
