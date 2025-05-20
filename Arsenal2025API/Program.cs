@@ -106,8 +106,6 @@ try
     builder.Services.AddScoped<ICoachesService, CoachesService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
 
-    #region Otel
-
     #region ratelimiting
     var limitOptions = new RateLimitConfig();
     builder.Configuration.GetSection(RateLimitConfig.ConfigName).Bind(limitOptions);
@@ -141,7 +139,7 @@ try
     });
     #endregion
 
-    #endregion
+    #region Otel
     if (otelConfig.Enabled)
     {
         builder.Services.AddOpenTelemetry()
@@ -185,7 +183,8 @@ try
             });
         });
     }
-
+    #endregion
+    
     var app = builder.Build();
         
     app.UseSerilogRequestLogging();
