@@ -106,8 +106,6 @@ try
     builder.Services.AddScoped<ICoachesService, CoachesService>();
     builder.Services.AddScoped<IAuthService, AuthService>();
 
-    #region Otel
-
     #region ratelimiting
     var limitOptions = new RateLimitConfig();
     builder.Configuration.GetSection(RateLimitConfig.ConfigName).Bind(limitOptions);
@@ -141,7 +139,7 @@ try
     });
     #endregion
 
-    #endregion
+    #region Otel
     if (otelConfig.Enabled)
     {
         builder.Services.AddOpenTelemetry()
@@ -185,7 +183,8 @@ try
             });
         });
     }
-
+    #endregion
+    
     var app = builder.Build();
         
     app.UseSerilogRequestLogging();
@@ -194,7 +193,7 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();
-        app.MapScalarApiReference("api-docs", options =>
+        app.MapScalarApiReference("apidocs", options =>
         {
             options.Title = "Arsenal 2024/2025 Demo API";
             options.ShowSidebar = true;
@@ -213,6 +212,8 @@ try
     app.UseAuthorization();
 
     app.UseRateLimiter();
+
+    app.UseErrorHandling();
 
     app.MapControllers();
 

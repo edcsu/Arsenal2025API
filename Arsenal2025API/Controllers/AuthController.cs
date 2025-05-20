@@ -10,6 +10,7 @@ using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Scalar.AspNetCore;
 
 namespace Arsenal2025API.Controllers;
 
@@ -33,6 +34,12 @@ public class AuthController: ControllerBase
     }
 
     [HttpPost("login")]
+    [Stability(Stability.Stable)]
+    [ProducesResponseType(typeof(LoginResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Generates an access token")]
+    [EndpointDescription("Get an access token to use the API")]
     public async Task<ActionResult<LoginResponse>> Login([FromBody]LoginRequest request, 
         CancellationToken cancellationToken = default)
     {
@@ -59,6 +66,14 @@ public class AuthController: ControllerBase
     
     [HttpPost("admins")]
     [Authorize(Roles = "Admin, Supervisor")]
+    [Stability(Stability.Stable)]
+    [ProducesResponseType(typeof(UserResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Create an admin")]
+    [EndpointDescription("Create an admin for the API")]
     public async Task<ActionResult<UserResponse>> CreateAdmin(CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -87,6 +102,14 @@ public class AuthController: ControllerBase
     
     [HttpGet("admins/{id:guid}")]
     [Authorize(Roles = "Admin, Supervisor")]
+    [Stability(Stability.Stable)]
+    [ProducesResponseType(typeof(UserResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Get a user")]
+    [EndpointDescription("Get details for a user")]
     public async Task<ActionResult<UserResponse>> GetUser(Guid id, 
         CancellationToken cancellationToken = default)
     {
