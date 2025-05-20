@@ -1,11 +1,15 @@
+using System.Net.Mime;
 using Arsenal2025API.Dtos;
 using Arsenal2025API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Arsenal2025API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Consumes(MediaTypeNames.Application.Json)]
+[Produces(MediaTypeNames.Application.Json)]
 public class PlayersController : ControllerBase
 {
     private readonly ILogger<PlayersController> _logger;
@@ -39,6 +43,7 @@ public class PlayersController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "Admin, Supervisor")]
     public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, 
         CancellationToken cancellationToken = default)
     {
@@ -50,6 +55,7 @@ public class PlayersController : ControllerBase
     }
     
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin, Supervisor")]
     public async Task<IActionResult> DeletePlayerAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
