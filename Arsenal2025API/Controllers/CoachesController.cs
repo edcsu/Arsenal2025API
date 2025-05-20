@@ -1,6 +1,7 @@
 using System.Net.Mime;
 using Arsenal2025API.Dtos;
 using Arsenal2025API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Arsenal2025API.Controllers;
@@ -46,6 +47,7 @@ public class CoachesController : ControllerBase
     }
     
     [HttpPost]
+    [Authorize(Roles = "Admin, Supervisor")]
     public async Task<IActionResult> CreateCoachAsync(CreateCoach createCoach, 
         CancellationToken cancellationToken = default)
     {
@@ -57,6 +59,7 @@ public class CoachesController : ControllerBase
     }
     
     [HttpDelete("{id:guid}")]
+    [Authorize(Roles = "Admin, Supervisor")]
     public async Task<IActionResult> DeleteCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
