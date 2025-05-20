@@ -193,7 +193,7 @@ try
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();
-        app.MapScalarApiReference("api-docs", options =>
+        app.MapScalarApiReference("apidocs", options =>
         {
             options.Title = "Arsenal 2024/2025 Demo API";
             options.ShowSidebar = true;

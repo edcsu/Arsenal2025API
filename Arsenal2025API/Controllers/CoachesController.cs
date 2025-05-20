@@ -1,8 +1,10 @@
 using System.Net.Mime;
 using Arsenal2025API.Dtos;
+using Arsenal2025API.Models;
 using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Scalar.AspNetCore;
 
 namespace Arsenal2025API.Controllers;
 
@@ -23,6 +25,13 @@ public class CoachesController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<Coach>), StatusCodes.Status200OK,MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Returns Arsenal coaches list")]
+    [EndpointDescription("Returns stats of all Arsenal coaches")]
+    [Stability(Stability.Stable)]
     public async Task<IActionResult> GetCoachesAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Trying to find coaches");
@@ -32,6 +41,13 @@ public class CoachesController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(Coach), StatusCodes.Status200OK,MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Returns coach stats")]
+    [EndpointDescription("Returns stats of a coach")]
+    [Stability(Stability.Stable)]
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
@@ -48,6 +64,14 @@ public class CoachesController : ControllerBase
     
     [HttpPost]
     [Authorize(Roles = "Admin, Supervisor")]
+    [Stability(Stability.Stable)]
+    [ProducesResponseType(typeof(Coach),StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Create coach stats")]
+    [EndpointDescription("Create stats of an Arsenal coach")]
     public async Task<IActionResult> CreateCoachAsync(CreateCoach createCoach, 
         CancellationToken cancellationToken = default)
     {
@@ -60,6 +84,13 @@ public class CoachesController : ControllerBase
     
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin, Supervisor")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Remove stats of a coach")]
+    [EndpointDescription("Remove stats of an Arsenal coach")]
     public async Task<IActionResult> DeleteCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {

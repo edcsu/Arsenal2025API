@@ -1,8 +1,10 @@
 using System.Net.Mime;
 using Arsenal2025API.Dtos;
+using Arsenal2025API.Models;
 using Arsenal2025API.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Scalar.AspNetCore;
 
 namespace Arsenal2025API.Controllers;
 
@@ -21,6 +23,13 @@ public class PlayersController : ControllerBase
     }
 
     [HttpGet]
+    [ProducesResponseType(typeof(List<Coach>), StatusCodes.Status200OK,MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Returns Arsenal players")]
+    [EndpointDescription("Returns details of all Arsenal players")]
+    [Stability(Stability.Stable)]
     public async Task<IActionResult> GetAllPlayers()
     {
         var response = await _playersService.GetAllPlayersAsync();
@@ -28,6 +37,12 @@ public class PlayersController : ControllerBase
     }
     
     [HttpGet("{id:guid}")]
+    [ProducesResponseType(typeof(Coach), StatusCodes.Status200OK,MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Returns a player stats")]
+    [EndpointDescription("Returns stats of a player")]
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
@@ -44,6 +59,13 @@ public class PlayersController : ControllerBase
     
     [HttpPost]
     [Authorize(Roles = "Admin, Supervisor")]
+    [ProducesResponseType(typeof(Player),StatusCodes.Status201Created, MediaTypeNames.Application.Json)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Create a player stats")]
+    [EndpointDescription("Create stats of an Arsenal player")]
     public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, 
         CancellationToken cancellationToken = default)
     {
@@ -56,6 +78,13 @@ public class PlayersController : ControllerBase
     
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin, Supervisor")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    [EndpointSummary("Delete stats of a player")]
+    [EndpointDescription("Delete stats of an Arsenal player")]
     public async Task<IActionResult> DeletePlayerAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
