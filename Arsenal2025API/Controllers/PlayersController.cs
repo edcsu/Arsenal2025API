@@ -46,6 +46,12 @@ public class PlayersController : ControllerBase
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+        {
+            _logger.LogError("Invalid player ID: {Id}", id);
+            return BadRequest("Invalid player ID");
+        }
+        
         _logger.LogInformation("Trying to find a player with id: {Id}", id);
         var player = await _playersService.FindByIdAsync(id, cancellationToken);
         if (player is null)
@@ -78,24 +84,32 @@ public class PlayersController : ControllerBase
     
     [HttpDelete("{id:guid}")]
     [Authorize(Roles = "Admin, Supervisor")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType( StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Delete stats of a player")]
     [EndpointDescription("Delete stats of an Arsenal men's player")]
-    public async Task<IActionResult> DeletePlayerAsync( Guid id, 
+    public async Task<IActionResult> DeletePlayerAsync(Guid id, 
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Trying to delete a men's player with id: {Id}", id);
-        var coach = await _playersService.DeleteByIdAsync(id, cancellationToken);
-        if (coach is false)
+        if (id == Guid.Empty)
         {
-            _logger.LogError("Player with id: {Id} was not deleted", id);
-            return NotFound();
+            _logger.LogError("Invalid player ID: {Id}", id);
+            return BadRequest("Invalid player ID");
         }
-        _logger.LogInformation("Player with id: {Id} was deleted", id);
-        return Ok();
+
+        _logger.LogDebug("Attempting to delete player with ID: {Id}", id);
+        
+        var isPlayerDeleted = await _playersService.DeleteByIdAsync(id, cancellationToken);
+        if (!isPlayerDeleted)
+        {
+            _logger.LogError("Failed to delete player with ID: {Id}", id);
+            return NotFound($"Player with ID {id} not found");
+        }
+        
+        _logger.LogDebug("Successfully deleted player with ID: {Id}", id);
+        return NoContent();
     }
 }

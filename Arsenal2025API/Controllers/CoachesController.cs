@@ -51,6 +51,12 @@ public class CoachesController : ControllerBase
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+        {
+            _logger.LogError("Invalid coach ID: {Id}", id);
+            return BadRequest("Invalid coach ID");
+        }
+        
         _logger.LogInformation("Trying to find a coach with id: {Id}", id);
         var coach = await _coachesService.FindByIdAsync(id, cancellationToken);
         if (coach is null)
@@ -83,25 +89,32 @@ public class CoachesController : ControllerBase
     }
     
     [HttpDelete("{id:guid}")]
-    [Authorize(Roles = "Admin, Supervisor")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType( StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Remove stats of a men's coach")]
     [EndpointDescription("Remove stats of an Arsenal men's coach")]
+    [Authorize(Roles = "Admin, Supervisor")]
     public async Task<IActionResult> DeleteCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
+        if (id == Guid.Empty)
+        {
+            _logger.LogError("Invalid coach ID: {Id}", id);
+            return BadRequest("Invalid coach ID");
+        }
+        
         _logger.LogInformation("Trying to delete a coach with id: {Id}", id);
-        var coach = await _coachesService.DeleteByIdAsync(id, cancellationToken);
-        if (coach is false)
+        var isCoachDeleted = await _coachesService.DeleteByIdAsync(id, cancellationToken);
+        if (!isCoachDeleted)
         {
             _logger.LogError("Coach with id: {Id} was not deleted", id);
             return NotFound();
         }
+        
         _logger.LogInformation("Coach with id: {Id} was deleted", id);
-        return Ok();
+        return NoContent();
     }
 }
