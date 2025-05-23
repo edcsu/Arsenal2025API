@@ -130,19 +130,20 @@ public class AuthController: ControllerBase
     
     private LoginResponse GenerateJwtToken(User user)
     {
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
+        var jwtConfig = _configuration.GetJwtConfig();
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var claims = new[]
         {
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role == SystemRole.Admin ? "Admin" : "Supervisor"),
+            new Claim(ClaimTypes.Role, user.Role == SystemRole.Admin ? AuthHelpers.ApiAdminClaim : AuthHelpers.ApiSupervisorClaim),
         };
 
         var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
+            issuer: jwtConfig.Issuer,
+            audience: jwtConfig.Audience,
             claims: claims,
             expires: DateTime.Now.AddHours(1),
             signingCredentials: credentials);

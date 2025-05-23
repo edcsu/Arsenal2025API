@@ -78,8 +78,8 @@ try
             .Enrich.WithThreadName()
             .Enrich.WithAssemblyName();
     });
-
-// Configure JWT authentication
+    
+    var jwtConfig = config.GetJwtConfig();
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
@@ -89,10 +89,10 @@ try
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = builder.Configuration["Jwt:Issuer"],
-                ValidAudience = builder.Configuration["Jwt:Audience"],
+                ValidIssuer = jwtConfig.Issuer,
+                ValidAudience = jwtConfig.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                    Encoding.UTF8.GetBytes(jwtConfig.Key))
             };
         });
 
