@@ -20,7 +20,7 @@ namespace Arsenal2025API.Controllers;
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
 [ApiVersion(1)]
-public class AuthController: ControllerBase
+public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
     private readonly IConfiguration _configuration;
@@ -37,8 +37,8 @@ public class AuthController: ControllerBase
 
     [HttpPost("login")]
     [Stability(Stability.Stable)]
-    [ProducesResponseType(typeof(LoginResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Generates an access token")]
     [EndpointDescription("Get an access token to use the API")]
@@ -46,18 +46,14 @@ public class AuthController: ControllerBase
         CancellationToken cancellationToken = default)
     {
         var user = await _authService.FindUserByUsernameAsync(request.Username, cancellationToken);
-
-        if (user is null || 
-            !AuthHelpers.VerifyPassword(request.Password, user.PasswordHash))
+        
+        if (!ValidateUserCredentials(user, request.Password, request.Username))
         {
-            _logger.LogError("Invalid username or password for {Username}", request.Username);
             return Unauthorized();
         }
         
-        // Check if the admin is active
-        if (!user.IsActive)
+        if (!ValidateUserStatus(user, request.Username))
         {
-            _logger.LogError("User {Username} is not active", request.Username);
             return Unauthorized("This account has been disabled. Please contact your system administrator.");
         }
 
@@ -65,12 +61,12 @@ public class AuthController: ControllerBase
         _logger.LogInformation("Generated token for user {Username}", request.Username);
         return Ok(loginResponse);
     }
-    
+
     [HttpPost("admins")]
     [Authorize(Roles = "Admin, Supervisor")]
     [Stability(Stability.Stable)]
-    [ProducesResponseType(typeof(UserResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -79,34 +75,22 @@ public class AuthController: ControllerBase
     public async Task<ActionResult<UserResponse>> CreateAdmin(CreateUserRequest request,
         CancellationToken cancellationToken = default)
     {
-        // Check if a username already exists
-        var saccoAdminWithUsername = await _authService.FindUserByUsernameAsync(request.Username, cancellationToken);
-        if (saccoAdminWithUsername is not null)
+        var validationResult = await ValidateNewUser(request, cancellationToken);
+        if (validationResult != null)
         {
-            _logger.LogError("User {Username} already exists", request.Username);
-            return BadRequest("Username already exists");
-        }
-
-        // Check if email already exists
-        var saccoAdminWithEmail = await _authService.FindUserByEmailAsync(request.Email, cancellationToken);
-        if (saccoAdminWithEmail is not null)
-        {
-            _logger.LogError("Email for {Username} already exists", request.Username);
-            return BadRequest("Email already exists");
+            return validationResult;
         }
 
         var user = await _authService.CreateUserAsync(request, cancellationToken);
-
         var response = user.ToUserResponse();
-
         return CreatedAtAction(nameof(GetUser), new { id = response.Id }, response);
     }
-    
+
     [HttpGet("admins/{id:guid}")]
     [Authorize(Roles = "Admin, Supervisor")]
     [Stability(Stability.Stable)]
-    [ProducesResponseType(typeof(UserResponse),StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
-    [ProducesResponseType( StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(UserResponse), StatusCodes.Status200OK, MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -116,44 +100,73 @@ public class AuthController: ControllerBase
         CancellationToken cancellationToken = default)
     {
         var user = await _authService.FindUserByIdAsync(id, cancellationToken);
-
         if (user is null)
         {
-            _logger.LogError("User with id: {Id} does not exists", id);
+            _logger.LogError("User with id: {Id} does not exist", id);
             return NotFound();
         }
-
         
         var response = user.ToUserResponse();
-        _logger.LogError("User with Id: {Id} exists", id);
-
+        _logger.LogInformation("User with Id: {Id} retrieved successfully", id);
         return Ok(response);
     }
-    
+
     private LoginResponse GenerateJwtToken(User user)
     {
         var jwtConfig = _configuration.GetJwtConfig();
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConfig.Key));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var claims = new[]
-        {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role == SystemRole.Admin ? AuthHelpers.ApiAdminClaim : AuthHelpers.ApiSupervisorClaim),
-        };
-
+        var claims = CreateUserClaims(user);
+        
         var token = new JwtSecurityToken(
             issuer: jwtConfig.Issuer,
             audience: jwtConfig.Audience,
             claims: claims,
-            expires: DateTime.Now.AddHours(1),
+            expires: DateTime.Now.AddHours(AuthHelpers.TokenExpirationHours),
             signingCredentials: credentials);
 
         return new LoginResponse
         {
             AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-            ExpiresIn = 3600,
+            ExpiresIn = AuthHelpers.TokenExpirationSeconds
         };
+    }
+
+    private static Claim[] CreateUserClaims(User user) =>
+    [
+        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+        new Claim(ClaimTypes.Name, user.Username),
+        new Claim(ClaimTypes.Role, user.Role == SystemRole.Admin 
+                ? AuthHelpers.ApiAdminClaim 
+                : AuthHelpers.ApiSupervisorClaim)
+    ];
+
+    private bool ValidateUserCredentials(User? user, string password, string username)
+    {
+        if (user is not null && AuthHelpers.VerifyPassword(password, user.PasswordHash)) return true;
+        _logger.LogError("Invalid username or password for {Username}", username);
+        return false;
+    }
+
+    private bool ValidateUserStatus(User user, string username)
+    {
+        if (user.IsActive) return true;
+        _logger.LogError("User {Username} is not active", username);
+        return false;
+    }
+
+    private async Task<ActionResult?> ValidateNewUser(CreateUserRequest request, CancellationToken cancellationToken)
+    {
+        var existingUserWithUsername = await _authService.FindUserByUsernameAsync(request.Username, cancellationToken);
+        if (existingUserWithUsername is not null)
+        {
+            _logger.LogError("User {Username} already exists", request.Username);
+            return BadRequest("Username already exists");
+        }
+
+        var existingUserWithEmail = await _authService.FindUserByEmailAsync(request.Email, cancellationToken);
+        if (existingUserWithEmail is null) return null;
+        _logger.LogError("Email for {Username} already exists", request.Username);
+        return BadRequest("Email already exists");
     }
 }

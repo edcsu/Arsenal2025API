@@ -4,16 +4,16 @@ public static class ConfigExtensions
 {
     public static OtelConfing GetOtelConfing(this IConfiguration configuration)
     {
-        return configuration.GetSection(OtelConfing.ConfigName).Get<OtelConfing>();
+        return configuration.GetSection(OtelConfing.ConfigName).Get<OtelConfing>() ?? new OtelConfing();
     }
     
     public static RateLimitConfig GetRateLimitConfig(this IConfiguration configuration)
     {
-        return configuration.GetSection(RateLimitConfig.ConfigName).Get<RateLimitConfig>();
+        return configuration.GetSection(RateLimitConfig.ConfigName).Get<RateLimitConfig>() ?? new RateLimitConfig();
     }
     
     public static JwtConfig GetJwtConfig(this IConfiguration configuration)
     {
-        return configuration.GetSection(JwtConfig.ConfigName).Get<JwtConfig>();
+        return configuration.GetSection(JwtConfig.ConfigName).Get<JwtConfig>() ?? new JwtConfig();
     }
 }
