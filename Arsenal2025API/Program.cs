@@ -4,6 +4,7 @@ using System.Threading.RateLimiting;
 using Arsenal2025API.Data;
 using Arsenal2025API.Helpers;
 using Arsenal2025API.Services;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -185,11 +186,25 @@ try
     }
     #endregion
     
+    builder.Services.AddApiVersioning(options =>
+        {
+            options.DefaultApiVersion = new ApiVersion(1);
+            options.ReportApiVersions = true;
+            options.AssumeDefaultVersionWhenUnspecified = true;
+            options.ApiVersionReader = ApiVersionReader.Combine(
+                new QueryStringApiVersionReader());
+        })
+        .AddMvc() // This is needed for controllers
+        .AddApiExplorer(options =>
+        {
+            options.GroupNameFormat = "'v'V";
+            options.SubstituteApiVersionInUrl = true;
+        });
+    
     var app = builder.Build();
         
     app.UseSerilogRequestLogging();
 
-    // Configure the HTTP request pipeline.
     if (app.Environment.IsDevelopment())
     {
         app.MapOpenApi();

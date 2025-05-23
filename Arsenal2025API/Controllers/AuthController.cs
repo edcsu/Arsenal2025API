@@ -7,6 +7,7 @@ using Arsenal2025API.Helpers;
 using Arsenal2025API.Mappers;
 using Arsenal2025API.Models;
 using Arsenal2025API.Services;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -18,6 +19,7 @@ namespace Arsenal2025API.Controllers;
 [Route("api/[controller]")]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
+[ApiVersion(1)]
 public class AuthController: ControllerBase
 {
     private readonly IAuthService _authService;

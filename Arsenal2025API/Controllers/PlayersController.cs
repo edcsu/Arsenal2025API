@@ -2,6 +2,7 @@ using System.Net.Mime;
 using Arsenal2025API.Dtos;
 using Arsenal2025API.Models;
 using Arsenal2025API.Services;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Scalar.AspNetCore;
@@ -12,6 +13,7 @@ namespace Arsenal2025API.Controllers;
 [ApiController]
 [Consumes(MediaTypeNames.Application.Json)]
 [Produces(MediaTypeNames.Application.Json)]
+[ApiVersion(1)]
 public class PlayersController : ControllerBase
 {
     private readonly ILogger<PlayersController> _logger;
