@@ -100,7 +100,7 @@ public class PlayersController : ControllerBase
             return BadRequest("Invalid player ID");
         }
 
-        _logger.LogDebug("Attempting to delete player with ID: {Id}", id);
+        _logger.LogInformation("Attempting to delete player with ID: {Id}", id);
         
         var isPlayerDeleted = await _playersService.DeleteByIdAsync(id, cancellationToken);
         if (!isPlayerDeleted)
@@ -109,7 +109,7 @@ public class PlayersController : ControllerBase
             return NotFound($"Player with ID {id} not found");
         }
         
-        _logger.LogDebug("Successfully deleted player with ID: {Id}", id);
+        _logger.LogInformation("Successfully deleted player with ID: {Id}", id);
         return NoContent();
     }
 }

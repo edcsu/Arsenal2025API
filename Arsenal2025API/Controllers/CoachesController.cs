@@ -106,15 +106,15 @@ public class CoachesController : ControllerBase
             return BadRequest("Invalid coach ID");
         }
         
-        _logger.LogInformation("Trying to delete a coach with id: {Id}", id);
+        _logger.LogInformation("Attempting to delete coach with ID: {Id}", id);
         var isCoachDeleted = await _coachesService.DeleteByIdAsync(id, cancellationToken);
         if (!isCoachDeleted)
         {
-            _logger.LogError("Coach with id: {Id} was not deleted", id);
-            return NotFound();
+            _logger.LogError("Failed to delete coach with ID: {Id}", id);
+            return NotFound($"Coach with ID {id} not found");
         }
         
-        _logger.LogInformation("Coach with id: {Id} was deleted", id);
+        _logger.LogInformation("Successfully deleted coach with ID: {Id}", id);
         return NoContent();
     }
 }
