@@ -27,8 +27,8 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [EndpointSummary("Returns Arsenal players")]
-    [EndpointDescription("Returns details of all Arsenal players")]
+    [EndpointSummary("Returns Arsenal men's players")]
+    [EndpointDescription("Returns details of all Arsenal men'splayers")]
     [Stability(Stability.Stable)]
     public async Task<IActionResult> GetAllPlayers()
     {
@@ -42,7 +42,7 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Returns a player stats")]
-    [EndpointDescription("Returns stats of a player")]
+    [EndpointDescription("Returns stats of an Arsenal men's player")]
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
@@ -65,11 +65,11 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Create a player stats")]
-    [EndpointDescription("Create stats of an Arsenal player")]
+    [EndpointDescription("Create stats of an Arsenal men's player")]
     public async Task<IActionResult> CreatePlayerAsync(CreatePlayer createPlayer, 
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Trying to create a player from: {Country}", createPlayer.Country);
+        _logger.LogInformation("Trying to create a men's player from: {Country}", createPlayer.Country);
         var player = await _playersService.CreateAsync(createPlayer, cancellationToken);
         
         _logger.LogInformation("Player with id: {Id} was created", player.Id);
@@ -84,11 +84,11 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Delete stats of a player")]
-    [EndpointDescription("Delete stats of an Arsenal player")]
+    [EndpointDescription("Delete stats of an Arsenal men's player")]
     public async Task<IActionResult> DeletePlayerAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Trying to delete a player with id: {Id}", id);
+        _logger.LogInformation("Trying to delete a men's player with id: {Id}", id);
         var coach = await _playersService.DeleteByIdAsync(id, cancellationToken);
         if (coach is false)
         {
