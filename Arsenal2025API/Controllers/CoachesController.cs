@@ -29,8 +29,8 @@ public class CoachesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [EndpointSummary("Returns Arsenal coaches list")]
-    [EndpointDescription("Returns stats of all Arsenal coaches")]
+    [EndpointSummary("Returns Arsenal men's coaches")]
+    [EndpointDescription("Returns stats of all Arsenal men's coaches")]
     [Stability(Stability.Stable)]
     public async Task<IActionResult> GetCoachesAsync(CancellationToken cancellationToken = default)
     {
@@ -45,8 +45,8 @@ public class CoachesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [EndpointSummary("Returns coach stats")]
-    [EndpointDescription("Returns stats of a coach")]
+    [EndpointSummary("Returns a men's coach stats")]
+    [EndpointDescription("Returns stats of a men's coach")]
     [Stability(Stability.Stable)]
     public async Task<IActionResult> GetCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
@@ -70,8 +70,8 @@ public class CoachesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [EndpointSummary("Create coach stats")]
-    [EndpointDescription("Create stats of an Arsenal coach")]
+    [EndpointSummary("Create a men's coach stats")]
+    [EndpointDescription("Create stats of an Arsenal men's coach")]
     public async Task<IActionResult> CreateCoachAsync(CreateCoach createCoach, 
         CancellationToken cancellationToken = default)
     {
@@ -89,8 +89,8 @@ public class CoachesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [EndpointSummary("Remove stats of a coach")]
-    [EndpointDescription("Remove stats of an Arsenal coach")]
+    [EndpointSummary("Remove stats of a men's coach")]
+    [EndpointDescription("Remove stats of an Arsenal men's coach")]
     public async Task<IActionResult> DeleteCoachAsync( Guid id, 
         CancellationToken cancellationToken = default)
     {

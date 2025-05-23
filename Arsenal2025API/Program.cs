@@ -195,7 +195,7 @@ try
         app.MapOpenApi();
         app.MapScalarApiReference("apidocs", options =>
         {
-            options.Title = "Arsenal 2024/2025 Demo API";
+            options.Title = "Arsenal Men's Team 2024/2025 Demo API";
             options.ShowSidebar = true;
             options.Theme = ScalarTheme.Mars;
             options.AddPreferredSecuritySchemes("Bearer");
