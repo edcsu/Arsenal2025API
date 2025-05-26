@@ -50,7 +50,7 @@ public class CoachesController : ControllerBase
     [EndpointSummary("Returns a men's coach stats")]
     [EndpointDescription("Returns stats of a men's coach")]
     [Stability(Stability.Stable)]
-    public async Task<IActionResult> GetCoachAsync( Guid id, 
+    public async Task<IActionResult> GetCoachAsync([FromRoute] Guid id, 
         CancellationToken cancellationToken = default)
     {
         if (id == Guid.Empty)
@@ -99,7 +99,7 @@ public class CoachesController : ControllerBase
     [EndpointSummary("Remove stats of a men's coach")]
     [EndpointDescription("Remove stats of an Arsenal men's coach")]
     [Authorize(Roles = "Admin, Supervisor")]
-    public async Task<IActionResult> DeleteCoachAsync( Guid id, 
+    public async Task<IActionResult> DeleteCoachAsync([FromRoute] Guid id, 
         CancellationToken cancellationToken = default)
     {
         if (id == Guid.Empty)

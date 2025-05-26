@@ -45,7 +45,7 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Returns a player stats")]
     [EndpointDescription("Returns stats of an Arsenal men's player")]
-    public async Task<IActionResult> GetCoachAsync( Guid id, 
+    public async Task<IActionResult> GetCoachAsync([FromRoute] Guid id, 
         CancellationToken cancellationToken = default)
     {
         if (id == Guid.Empty)
@@ -93,7 +93,7 @@ public class PlayersController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [EndpointSummary("Delete stats of a player")]
     [EndpointDescription("Delete stats of an Arsenal men's player")]
-    public async Task<IActionResult> DeletePlayerAsync(Guid id, 
+    public async Task<IActionResult> DeletePlayerAsync([FromRoute] Guid id, 
         CancellationToken cancellationToken = default)
     {
         if (id == Guid.Empty)
